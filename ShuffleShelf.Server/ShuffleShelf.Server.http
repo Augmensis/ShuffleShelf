@@ -1,0 +1,6 @@
+@ShuffleShelf.Server_HostAddress = http://localhost:5150
+
+GET {{ShuffleShelf.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
