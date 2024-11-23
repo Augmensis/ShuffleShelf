@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShuffleShelf.Server.Models;
 using ShuffleShelf.Server.Services;
+using System.Text.Json;
 
 namespace ShuffleShelf.Server.Controllers;
 [Route("api/[controller]")]
@@ -15,7 +16,7 @@ public class BookController : ControllerBase
         _algoliaService = algoliaService;
     }
 
-    [HttpGet("randombook")]
+    [HttpGet("random")]
     public async Task<IActionResult> GetRandomBook()
     {
         var randPage = Random.Shared.Next(1, 25);
@@ -24,8 +25,8 @@ public class BookController : ControllerBase
         return Ok(liveBooks[randBook]);
     }
 
-    [HttpGet("randombooks/{results:int}")]
-    public async Task<IActionResult> GetRandomBook(int results)
+    [HttpGet("random/{results:int}")]
+    public async Task<IActionResult> GetRandomBooks(int results)
     {
         var randPage = Random.Shared.Next(1, 25);
         var liveBooks = await _algoliaService.FetchBooksAsync(randPage);
@@ -35,6 +36,6 @@ public class BookController : ControllerBase
             var randBook = Random.Shared.Next(1, liveBooks.Count - 1);
             randBooks.Add(liveBooks[randBook]);
         }
-        return Ok(randBooks.OrderBy(x => x.ShortTitle));
+        return Ok(randBooks);
     }
 }

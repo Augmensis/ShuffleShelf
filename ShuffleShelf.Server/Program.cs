@@ -1,4 +1,5 @@
 using ShuffleShelf.Server.Services;
+using System.Text.Json;
 
 namespace ShuffleShelf.Server
 {
@@ -18,7 +19,13 @@ namespace ShuffleShelf.Server
                 x.ReloadOnChange = true;
             });
 
-            builder.Services.AddControllers();
+            // Add JSON response formatting to standardise everything to lower_snake_case
+            builder.Services.AddControllers()
+                .AddJsonOptions(jOpts =>
+            {
+                jOpts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+                jOpts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<HttpClient>();
