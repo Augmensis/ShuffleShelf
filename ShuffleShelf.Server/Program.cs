@@ -10,7 +10,7 @@ namespace ShuffleShelf.Server
             var builder = WebApplication.CreateBuilder(args);
 
             // NOTE: The MS User Secrets facility is a pain for anyone not using 
-            // Visual Studio (e.g. Rider, VS Code, etc). Using the appsettings.local
+            // Visual Studio (e.g. Rider, VS Code, etc). Using appsettings.Local.json
             // allows for greater portability and easier local testing.
             builder.Configuration.AddJsonFile(x =>
             {

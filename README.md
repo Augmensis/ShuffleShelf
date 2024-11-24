@@ -20,6 +20,7 @@ WOB has no affiliate functionality, so this is purely for the joy of finding new
 # TODO:
 - [ ] Expand the Algolia service to handle user-provided filters (categories, price ranges, etc)
 - [ ] Research limitations with Algolia queries. 500k books are available, but we can only reach the first 25 pages (40 books per page) on the WOB website. 1000 out of 500k books isn't a great selection!
+- [ ] Add offer handling (e.g. buy 3 get 1)
 
 Add React frontend with:
 - [ ] Search filter(s)

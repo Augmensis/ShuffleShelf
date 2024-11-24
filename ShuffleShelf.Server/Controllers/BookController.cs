@@ -28,14 +28,29 @@ public class BookController : ControllerBase
     [HttpGet("random/{results:int}")]
     public async Task<IActionResult> GetRandomBooks(int results)
     {
+        // Limit results to reduce the opportunity for abuse.
+        if (results > 20)
+            results = 20;
+
+        // There is a limit of 25 pages, which I think is baked into Shopify
         var randPage = Random.Shared.Next(1, 25);
         var liveBooks = await _algoliaService.FetchBooksAsync(randPage);
-        var randBooks = new List<BookHit>();
-        for (int i = 0; i < results; i++)
+        var randBooks = new Dictionary<string, BookHit>();
+
+        // Reduce the available results to the number of books available.
+        if(liveBooks.Count < results)
+            results = liveBooks.Count;
+
+        // TODO: Add a check for duplicates that cause the total number of available liveBooks
+        // to be less than the expected number or results
+        while(randBooks.Count < results)
         {
-            var randBook = Random.Shared.Next(1, liveBooks.Count - 1);
-            randBooks.Add(liveBooks[randBook]);
+            var randIndex = Random.Shared.Next(0, liveBooks.Count -1);
+            var randBook = liveBooks[randIndex];
+            randBooks.TryAdd(randBook.ShortTitle, randBook);
         }
-        return Ok(randBooks);
+
+        // TODO: Fetch book descriptions, perhaps?
+        return Ok(randBooks.Values.ToList());
     }
 }
