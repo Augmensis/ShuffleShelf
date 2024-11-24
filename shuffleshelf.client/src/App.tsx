@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import * as React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { CardGroup } from 'react-bootstrap';
+import BookCard from '../components/BookCard';
 
-interface Book {
+export interface Book {
     id: number,
     short_title: string,
     long_title: string,
@@ -29,34 +31,17 @@ function App() {
     }, []);
 
     const contents = books === undefined
-        ? <p><em>Loading...</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>From Price</th>
-                    <th>Date Published</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {books.map(book =>
-                    <tr key={book.id}>
-                        <td>{book.short_title}</td>
-                        <td>{book.author}</td>
-                        <td>{book.from_price}</td>
-                        <td>{book.date_published}</td>
-                        <td><a href={`https://www.worldofbooks.com/en-gb/products/${book.product_handle}`}>View Book</a></td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+        ? <h2><em>Searching for hidden treasures...</em></h2>
+        : <CardGroup>
+            {books.map(book =>                 
+                <BookCard key={book.id} book={book} />                
+            )}            
+        </CardGroup>;
 
     return (
         <div>
             <h1 id="tableLabel">A Random Selection of books from World Of Books!</h1>
-            <p>What will you find for your shelves today?</p>
+            <p>What treasures will you find for your shelves today?</p>
             {contents}
         </div>
     );
